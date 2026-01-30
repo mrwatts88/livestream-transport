@@ -9,9 +9,9 @@ A custom livestreaming pipeline built from scratch in Rust. This project impleme
 
 ### Components
 
-- **Producer**: Captures video from camera using FFmpeg and sends encoded frames to the signaling server
-- **Consumer**: Receives frames from signaling and plays them via FFplay
-- **Signaling Server**: Handles ICE candidate exchange and SDP negotiation between peers
+- **Producer**: Reads MPEG-TS stream from stdin (piped from FFmpeg) and sends frames over UDP to consumers
+- **Consumer**: Receives frames via UDP and writes to stdout (piped to FFplay for playback)
+- **Signaling Server**: QUIC-based server (via s2n-quic) for ICE candidate exchange and SDP negotiation (WIP)
 - **STUN/TURN**: Self-hosted via [coturn](https://github.com/coturn/coturn) for NAT traversal
 
 ### Key Features
@@ -19,7 +19,7 @@ A custom livestreaming pipeline built from scratch in Rust. This project impleme
 - Custom transport protocol (not using GStreamer)
 - Multi-client streaming across different networks
 - NAT traversal via STUN/TURN
-- WebRTC-style signaling for peer discovery
+- QUIC-based signaling via s2n-quic
 
 ## Prerequisites
 
@@ -43,13 +43,13 @@ cargo build
 ### Running
 
 ```bash
-# Start the producer
+# Start the producer (captures from camera, sends over UDP)
 make p
 
 # In another terminal, start a consumer in signaling mode
 make s
 
-# Or start a consumer in consumer mode
+# Or start a consumer in consumer mode (receives UDP, plays via FFplay)
 make c
 
 # Run tests

@@ -1,13 +1,13 @@
 .PHONY: signaling consumer test fmt clippy check
 
 p:
-	cargo run --bin producer -- p
+	ffmpeg -hide_banner -loglevel error -f v4l2 -i /dev/video0 -f mpegts - | cargo run --bin producer -- p
 
 s:
 	cargo run --bin consumer -- s
 
 c:
-	cargo run --bin consumer -- c
+	cargo run --bin consumer -- c | ffplay -vf setpts=0 -
 
 test:
 	cargo test

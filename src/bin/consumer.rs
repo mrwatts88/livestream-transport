@@ -2,7 +2,10 @@ use std::{
     env::{self, args},
     error::Error,
 };
-use tokio::net::UdpSocket;
+use tokio::{
+    io::{AsyncWriteExt, stdout},
+    net::UdpSocket,
+};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
@@ -24,10 +27,12 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     let socket = UdpSocket::bind(addr).await?;
     socket.connect(&producer_addr).await?;
+    let mut std_out = stdout();
 
     loop {
         let mut buf = [0u8; 1024];
         let num_bytes = socket.recv(&mut buf).await?;
-        println!("{:?}", str::from_utf8(&buf[0..num_bytes])?);
+
+        std_out.write_all(&buf[0..num_bytes]).await?;
     }
 }
