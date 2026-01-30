@@ -17,9 +17,11 @@ The project uses STUN/TURN (self-hosted coturn) for NAT traversal to enable stre
 ## Build Commands
 
 ```bash
-make signaling      # Build and run the signaling server
-make consumer   # Build and run a consumer client
+make p          # Build and run the producer
+make s          # Build and run a consumer in signaling mode
+make c          # Build and run a consumer in consumer mode
 make test       # Run the test suite
+make ci         # Run all CI checks (fmt, clippy, check, test)
 cargo build     # Build all targets
 cargo fmt       # Format code
 cargo clippy    # Run lints
@@ -30,13 +32,10 @@ cargo clippy    # Run lints
 ```
 src/
 ├── lib.rs          # Library root
-├── signaling/          # Signaling server implementation
-├── consumer/       # Consumer client implementation
-├── signaling/      # Signaling server for ICE/SDP
-├── transport/      # Custom transport protocol
 └── bin/
-    ├── signaling.rs    # Signaling server binary
-    └── consumer.rs # Consumer binary
+    ├── producer.rs # Producer binary
+    ├── consumer.rs # Consumer binary
+    └── signaling.rs # Signaling server binary (WIP)
 ```
 
 ## Key Design Decisions

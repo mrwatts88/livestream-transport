@@ -1,13 +1,13 @@
 .PHONY: signaling consumer test fmt clippy check
 
 p:
-	cargo run --bin producer
+	cargo run --bin producer -- p
 
 s:
-	cargo run --bin signaling
+	cargo run --bin consumer -- s
 
 c:
-	cargo run --bin consumer
+	cargo run --bin consumer -- c
 
 test:
 	cargo test

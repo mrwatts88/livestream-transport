@@ -43,11 +43,14 @@ cargo build
 ### Running
 
 ```bash
-# Start the signaling server
-make signaling
+# Start the producer
+make p
 
-# In another terminal, start a consumer
-make consumer
+# In another terminal, start a consumer in signaling mode
+make s
+
+# Or start a consumer in consumer mode
+make c
 
 # Run tests
 make test
